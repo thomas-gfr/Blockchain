@@ -1,3 +1,4 @@
+import os.path
 import uuid
 import json
 
@@ -11,8 +12,9 @@ class Wallet:
 
     def generate_unique_id(self):
         self.unique_id = str(uuid.uuid4())
-
-    # Ajouter verifications pour les autres wallet
+        # --- Check if file(unique_id) exist --- #
+        while os.path.isfile("content/wallets/" + self.unique_id + ".json"):
+            self.unique_id = str(uuid.uuid4())
 
     def add_balance(self, value):
         self.balance += value

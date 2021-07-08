@@ -3,8 +3,9 @@ from classes.wallet import Wallet
 
 def main():
     wallet = Wallet()
-    wallet.load("20eeba69-5ce0-4c99-85aa-52fee64b4d45")
-    print(wallet.balance)
+    wallet.generate_unique_id()
+    wallet.add_balance(200000)
+    wallet.save()
 
 
 if __name__ == "__main__":
