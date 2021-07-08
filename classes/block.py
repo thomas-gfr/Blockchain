@@ -5,11 +5,11 @@ import json
 
 class Block:
 
-    def __init__(self):
-        self.base_hash = 0
-        self.hash = ""
-        self.parent_hash = ""
-        self.transactions = []
+    def __init__(self, base_hash: int, hash: str, parent_hash: str, transactions: []):
+        self.base_hash = base_hash
+        self.hash = hash
+        self.parent_hash = parent_hash
+        self.transactions = transactions
 
     def check_hash(self) -> bool:
         return hashlib.sha256(str(self.base_hash).encode()).hexdigest() == self.hash
