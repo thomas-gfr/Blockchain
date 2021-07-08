@@ -1,2 +1,2 @@
 class Block:
-    blocs = []
+    blocs = {}

@@ -1,13 +1,14 @@
 import uuid
+import json
 
 
 class Wallet:
-    unique_id = ''
+    unique_id = ""
     balance = 0
-    history = []
+    history = {}
 
     def generate_unique_id(self):
-        self.unique_id = uuid.uuid4()
+        self.unique_id = str(uuid.uuid4())
 
     # Ajouter verifications pour les autres wallet
 
@@ -19,3 +20,8 @@ class Wallet:
 
     def send(self):
         pass
+
+    def save(self):
+        fichier = open("content/wallets/" + self.unique_id + ".json", "a")
+        fichier.write(json.dumps(self.__dict__))
+        fichier.close()
