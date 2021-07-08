@@ -3,10 +3,8 @@ from classes.wallet import Wallet
 
 def main():
     wallet = Wallet()
-    wallet.generate_unique_id()
-    wallet.add_balance(2000)
-    wallet.sub_balance(200)
-    wallet.save()
+    wallet.load("20eeba69-5ce0-4c99-85aa-52fee64b4d45")
+    print(wallet.balance)
 
 
 if __name__ == "__main__":
