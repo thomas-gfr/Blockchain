@@ -32,8 +32,9 @@ class Wallet:
 
     def load(self, value):
         fichier = open("content/wallets/" + value + ".json", "r")
-        fichier = json.load(fichier)
-        self.unique_id = fichier["unique_id"]
-        self.balance = fichier["balance"]
-        self.history = fichier["history"]
+        file = json.load(fichier)
+        fichier.close()
+        self.unique_id = file["unique_id"]
+        self.balance = file["balance"]
+        self.history = file["history"]
         # erreur si wallet existe pas
