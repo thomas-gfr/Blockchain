@@ -16,7 +16,9 @@ class Block:
         return hashlib.sha256(str(self.base_hash).encode()).hexdigest() == self.hash
 
     def add_transaction(self, wallet_emitter, wallet_receiver, amount):
-        transaction_id = int(uuid.uuid1())  # add vérif if already exist
+        transaction_id = int(uuid.uuid1())
+        while transaction_id == self.transactions["transaction_id"]:
+            transaction_id = int(uuid.uuid1())
         wallet_emitter.sub_balance(amount)
         wallet_emitter.save()
         wallet_receiver.add_balance(amount)
