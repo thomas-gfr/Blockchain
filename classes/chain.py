@@ -5,12 +5,12 @@ from classes.block import Block
 
 class Chain:
 
-    def __init__(self):
-        self.blocks = []
-        self.last_transaction_number = 0
-        self.hash = "00"
-        self.parent_hash = "00"
-        self.last_block_number = 0
+    def __init__(self, last_transaction_number: int, last_block_number: int, hash: str, parent_hash: str, blocks: []):
+        self.blocks = blocks
+        self.last_transaction_number = last_transaction_number
+        self.hash = hash
+        self.parent_hash = parent_hash
+        self.last_block_number = last_block_number
 
     def generate_hash(self):
         number = 0
@@ -34,14 +34,16 @@ class Chain:
 
     def add_block(self):
         self.generate_hash()
-        new_block = Block(self.last_block_number, self.hash, self.parent_hash, [])
-        self.blocks.append(new_block)
-        new_block.save()
+        block = Block(self.last_block_number, self.hash, self.parent_hash, [])
+        self.blocks.append(block)
+        block.save()
 
     def get_block(self, value):
-        return self.blocks[value]
+        for key in self.blocks:
+            if key["hash"] == value:
+                return key
+        return "hash introuvable, veuillez vérifier le hash"
 
     def add_transaction(self, value, wallet_emitter, wallet_receiver, amount):
         block = self.get_block(value)
         block.add_transaction(wallet_emitter, wallet_receiver, amount)
-
