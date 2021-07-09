@@ -1,14 +1,19 @@
 import os.path
 import uuid
 import json
+import settings.settings
 
 
 class Wallet:
 
     def __init__(self):
-        self.unique_id = self.generate_unique_id()
-        self.balance = 0
-        self.history = {}
+        if settings.settings.TOKEN < settings.settings.MAX_TOKEN_NUMBER:
+            self.unique_id = self.generate_unique_id()
+            self.balance = 0
+            self.history = {}
+            settings.settings.TOKEN += 100
+        else:
+            print('Nombre de token insuffisant')
 
     def generate_unique_id(self):
         self.unique_id = str(uuid.uuid4())
