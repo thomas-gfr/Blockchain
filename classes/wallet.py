@@ -10,7 +10,7 @@ class Wallet:
         if settings.settings.TOKEN < settings.settings.MAX_TOKEN_NUMBER:
             self.unique_id = self.generate_unique_id()
             self.balance = 0
-            self.history = {}
+            self.history = []
             settings.settings.TOKEN += 100
         else:
             print('Nombre de token insuffisant')
@@ -30,8 +30,9 @@ class Wallet:
         self.balance -= value
         self.save()
 
-    def send(self):
-        pass
+    def send(self, transaction):
+        self.history.append(transaction)
+        self.save()
 
     def save(self):
         fichier = open("content/wallets/" + self.unique_id + ".json", "w+")

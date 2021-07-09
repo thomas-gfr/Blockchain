@@ -1,9 +1,11 @@
 import hashlib
 import os.path
+import json
 from classes.block import Block
 
 
 class Chain:
+    last_transaction_number = 0
 
     def __init__(self, last_transaction_number: int, last_block_number: int, hash: str, parent_hash: str, blocks: []):
         self.blocks = blocks
@@ -38,10 +40,19 @@ class Chain:
         self.blocks.append(block)
         block.save()
 
-    def get_block(self, value):
-        for key in self.blocks:
-            if key["hash"] == value:
-                return key
+    @staticmethod
+    def get_block(value):
+        path = 'content/blocks/' + value + '.json'
+        if os.path.isfile(path):
+            block = open(path, 'r')
+            block = json.load(block)
+            response = Block(
+                block['base_hash'],
+                block['hash'],
+                block['parent_hash'],
+                block['transactions']
+            )
+            return response
         return "hash introuvable, veuillez vérifier le hash"
 
     def add_transaction(self, hash, wallet_emitter, wallet_receiver, amount):
@@ -50,10 +61,22 @@ class Chain:
                 if wallet_emitter.balance >= amount:
                     if self.get_block(hash) != "hash introuvable, veuillez vérifier le hash":
                         block = self.get_block(hash)
-                        block = Block(block["base_hash"], block['base_hash'], block['base_hash'], [])
-                        block.add_transaction(wallet_emitter, wallet_receiver, amount)
+                        new_transaction = block.add_transaction(
+                            wallet_emitter.unique_id,
+                            wallet_receiver.unique_id,
+                            amount,
+                            self.last_transaction_number + 1
+                        )
                         wallet_emitter.sub_balance(amount)
                         wallet_receiver.add_balance(amount)
+
+                        if new_transaction is True:
+                            block.save()
+                            for element in self.blocks:
+                                if element.hash == block.hash:
+                                    self.blocks[self.blocks.index(element)] = block
+                            self.last_transaction_number += 1
+
                     else:
                         return "Le block est introuvable, veuillez vérifier le hash."
                 else:
@@ -66,9 +89,9 @@ class Chain:
 
     def find_transaction(self, transaction_id):
         for key in self.blocks:
-            if key['transactions'][0]['transaction_id'] == transaction_id:
+            if key['transactions'][0]['transaction_number'] == transaction_id:
                 return key
         return "id de transaction introuvable, veuillez vérifier le numéro"
 
     def get_last_transaction_number(self):
-        pass
+        return self.last_transaction_number

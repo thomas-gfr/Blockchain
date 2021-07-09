@@ -1,7 +1,6 @@
 import hashlib
 import os.path
 import json
-import uuid
 
 
 class Block:
@@ -15,19 +14,22 @@ class Block:
     def check_hash(self) -> bool:
         return hashlib.sha256(str(self.base_hash).encode()).hexdigest() == self.hash
 
-    def add_transaction(self, wallet_emitter, wallet_receiver, amount):
-        transaction_id = int(uuid.uuid1())
-        # while transaction_id == self.transactions["transaction_id"]:
-        #    transaction_id = int(uuid.uuid1())
-        self.transactions.append({"transaction_id": transaction_id,
-                                  "emitter": wallet_emitter.unique_id,
-                                  "receiver": wallet_receiver.unique_id,
-                                  "sum": amount})
+    def add_transaction(self, transaction_number, wallet_emitter, wallet_receiver, amount):
+        new_transaction = {
+            "transaction_number": transaction_number,
+            "emitter": wallet_emitter.unique_id,
+            "receiver": wallet_receiver.unique_id,
+            "sum": amount
+
+        }
+        wallet_emitter.send(new_transaction)
+        wallet_receiver.send(new_transaction)
+        self.transactions.append(new_transaction)
         self.save()
 
     def get_transaction(self, transaction_id):
         for key in self.transactions:
-            if key["transaction_id"] == transaction_id:
+            if key["transaction_number"] == transaction_id:
                 return key
         return "transaction introuvable, veuillez vérifier le numéro"
 
