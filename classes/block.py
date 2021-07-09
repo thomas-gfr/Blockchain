@@ -17,12 +17,8 @@ class Block:
 
     def add_transaction(self, wallet_emitter, wallet_receiver, amount):
         transaction_id = int(uuid.uuid1())
-        while transaction_id == self.transactions["transaction_id"]:
-            transaction_id = int(uuid.uuid1())
-        wallet_emitter.sub_balance(amount)
-        wallet_emitter.save()
-        wallet_receiver.add_balance(amount)
-        wallet_receiver.save()
+        # while transaction_id == self.transactions["transaction_id"]:
+        #    transaction_id = int(uuid.uuid1())
         self.transactions.append({"transaction_id": transaction_id,
                                   "emitter": wallet_emitter.unique_id,
                                   "receiver": wallet_receiver.unique_id,
@@ -39,7 +35,7 @@ class Block:
         return os.path.getsize("content/blocs/" + self.hash + ".json")
 
     def save(self):
-        fichier = open("content/blocs/" + self.hash + ".json", "w+")
+        fichier = open("content/blocs/" + str(self.hash) + ".json", "w+")
         fichier.write(json.dumps(self.__dict__))
         fichier.close()
 

@@ -44,6 +44,20 @@ class Chain:
                 return key
         return "hash introuvable, veuillez vérifier le hash"
 
-    def add_transaction(self, value, wallet_emitter, wallet_receiver, amount):
-        block = self.get_block(value)
-        block.add_transaction(wallet_emitter, wallet_receiver, amount)
+    def add_transaction(self, hash, wallet_emitter, wallet_receiver, amount):
+        if os.path.isfile("content/wallets/" + wallet_emitter.unique_id + ".json"):
+            if os.path.isfile("content/wallets/" + wallet_receiver.unique_id + ".json"):
+                if wallet_emitter.balance > amount:
+                    if self.get_block(hash) != "hash introuvable, veuillez vérifier le hash":
+                        block = self.get_block(hash)
+                        block = Block(block["base_hash"], block['base_hash'], block['base_hash'], [])
+                        block.add_transaction(wallet_emitter, wallet_receiver, amount)
+                    else:
+                        return "Le block est introuvable, veuillez vérifier le hash."
+                else:
+                    return "La balance du wallet émetteur ne permet pas de faire la transaction. " \
+                           "Le solde est insuffisant"
+            else:
+                return "Le wallet du récepteur est introuvable. Veuillez vérifier celui-ci."
+        else:
+            return "Le wallet émetteur est introuvable. Veuillez vérifier celui-ci."
