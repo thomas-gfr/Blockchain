@@ -18,9 +18,11 @@ class Wallet:
 
     def add_balance(self, value):
         self.balance += value
+        self.save()
 
     def sub_balance(self, value):
         self.balance -= value
+        self.save()
 
     def send(self):
         pass
