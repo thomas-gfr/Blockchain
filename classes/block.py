@@ -27,9 +27,9 @@ class Block:
         self.transactions.append(new_transaction)
         self.save()
 
-    def get_transaction(self, transaction_id):
+    def get_transaction(self, transaction_number):
         for key in self.transactions:
-            if key["transaction_number"] == transaction_id:
+            if key["transaction_number"] == transaction_number:
                 return key
         return "transaction introuvable, veuillez vérifier le numéro"
 
