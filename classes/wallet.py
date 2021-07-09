@@ -31,10 +31,12 @@ class Wallet:
         fichier.close()
 
     def load(self, value):
-        fichier = open("content/wallets/" + value + ".json", "r")
-        file = json.load(fichier)
-        fichier.close()
-        self.unique_id = file["unique_id"]
-        self.balance = file["balance"]
-        self.history = file["history"]
-        # erreur si wallet existe pas
+        if os.path.isfile("content/wallets/" + value + ".json"):
+            fichier = open("content/wallets/" + value + ".json", "r")
+            file = json.load(fichier)
+            fichier.close()
+            self.unique_id = file["unique_id"]
+            self.balance = file["balance"]
+            self.history = file["history"]
+        else:
+            return "Le wallet existe pas, veuillez vérifier le nom du wallet"
