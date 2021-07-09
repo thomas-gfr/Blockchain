@@ -69,3 +69,6 @@ class Chain:
             if key['transactions'][0]['transaction_id'] == transaction_id:
                 return key
         return "id de transaction introuvable, veuillez vérifier le numéro"
+
+    def get_last_transaction_number(self):
+        pass
