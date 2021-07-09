@@ -42,11 +42,13 @@ class Block:
         fichier.close()
 
     def load(self, value):
-        fichier = open("content/wallets/" + value + ".json", "r")
-        file = json.load(fichier)
-        fichier.close()
-        self.base_hash = file["base_hash"]
-        self.hash = file["hash"]
-        self.parent_hash = file["parent_hash"]
-        self.transactions = file["transactions"]
-        # erreur si HASH existe pas
+        if os.path.isfile("content/blocs/" + value + ".json"):
+            fichier = open("content/blocs/" + value + ".json", "r")
+            file = json.load(fichier)
+            fichier.close()
+            self.base_hash = file["base_hash"]
+            self.hash = file["hash"]
+            self.parent_hash = file["parent_hash"]
+            self.transactions = file["transactions"]
+        else:
+            return "Le hash est introuvable, veuillez vérifier le hash"

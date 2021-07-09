@@ -39,4 +39,4 @@ class Wallet:
             self.balance = file["balance"]
             self.history = file["history"]
         else:
-            return "Le wallet existe pas, veuillez vérifier le nom du wallet"
+            return "Le wallet est introuvable, veuillez vérifier le nom du wallet"
