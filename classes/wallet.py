@@ -26,7 +26,7 @@ class Wallet:
         pass
 
     def save(self):
-        fichier = open("content/wallets/" + self.unique_id + ".json", "a")
+        fichier = open("content/wallets/" + self.unique_id + ".json", "w+")
         fichier.write(json.dumps(self.__dict__))
         fichier.close()
 

@@ -1,6 +1,7 @@
 import hashlib
 import os.path
 import json
+import uuid
 
 
 class Block:
@@ -15,18 +16,28 @@ class Block:
         return hashlib.sha256(str(self.base_hash).encode()).hexdigest() == self.hash
 
     def add_transaction(self, wallet_emitter, wallet_receiver, amount):
-        self.transactions.append({"emitter": wallet_emitter.unique_id,
+        transaction_id = int(uuid.uuid1())  # add vérif if already exist
+        wallet_emitter.sub_balance(amount)
+        wallet_emitter.save()
+        wallet_receiver.add_balance(amount)
+        wallet_receiver.save()
+        self.transactions.append({"transaction_id": transaction_id,
+                                  "emitter": wallet_emitter.unique_id,
                                   "receiver": wallet_receiver.unique_id,
                                   "sum": amount})
+        self.save()
 
-    def get_transaction(self, value):
-        return self.transactions[value]
+    def get_transaction(self, transaction_id):
+        for key in self.transactions:
+            if key["transaction_id"] == transaction_id:
+                return key
+        return "transaction introuvable, veuillez vérifier le numéro"
 
     def get_weight(self):
         return os.path.getsize("content/blocs/" + self.hash + ".json")
 
     def save(self):
-        fichier = open("content/blocs/" + self.hash + ".json", "a")
+        fichier = open("content/blocs/" + self.hash + ".json", "w+")
         fichier.write(json.dumps(self.__dict__))
         fichier.close()
 

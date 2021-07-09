@@ -44,4 +44,4 @@ class Chain:
     def add_transaction(self, value, wallet_emitter, wallet_receiver, amount):
         block = self.get_block(value)
         block.add_transaction(wallet_emitter, wallet_receiver, amount)
-        block.save()
+
